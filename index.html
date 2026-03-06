@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bus Map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="leaflet-rotatedmarker.js"></script>
-</head>
-<body style="margin:0px;">
-    <div id="map-wrapper" style="width: 100%; height:100%; position: fixed;">
-        <div id="theMap" style="width: 100%; height:100%; position: relative;"></div>
-    </div>
-    <script src='main.js'></script>
+<meta charset="UTF-8">
+<title>Halifax Transit Tracker</title>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<link rel="stylesheet" href="style.css">
+<body>
+
+<div id="map"></div>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Marker rotation plugin -->
+<script src="leaflet-rotatedmarker.js"></script>
+
+<!-- Your script -->
+<script src="main.js"></script>
+
 </body>
+
 </html>
