@@ -1,16 +1,70 @@
 // IIFE
 (() => {
 
-    //create map in leaflet and tie it to the div called 'theMap'
-    let map = L.map('theMap').setView([44.650627, -63.597140], 14);
+function loadBusData(){
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+  fetch("https://halifax-transit-data.onrender.com/vehicles")
+  .then(res => res.json())
+  .then(data => {
+      console.log(data);
+  });
 
-    L.marker([44.650690, -63.596537]).addTo(map)
-        .bindPopup('This is a sample popup. You can put any html structure in this including extra bus data. You can also swap this icon out for a custom icon. A png file has been provided for you to use if you wish.')
-        .openPopup();
+  const filteredBuses = data.entity.filter(bus => {
+    const route = bus.vehicle.trip.routeId;
+    return route >= 1 && route <= 10;
+  });
+
+  const geoJSON = {
+    type: "FeatureCollection",
+    features: filteredBuses.map(bus => ({
+        type: "Feature",
+        properties: {
+            route: bus.vehicle.trip.routeId
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [
+                bus.vehicle.position.longitude,
+                bus.vehicle.position.latitude
+            ]
+        }
+    }))
+  };
+
+  L.geoJSON(geoJSON).addTo(map);
+
+  const busIcon = L.icon({
+    iconUrl: "bus.png",
+    iconSize: [30, 30]
+  });
+
+  L.geoJSON(geoJSON, {
+    pointToLayer: function(feature, latlng) {
+        return L.marker(latlng, {icon: busIcon});
+    }
+  }).addTo(map);
+
+  leaflet-rotatedmarker.js
+
+  return L.marker(latlng, {
+    icon: busIcon,
+    rotationAngle: feature.properties.bearing
+  });
+
+  onEachFeature: function(feature, layer) {
+    layer.bindPopup(
+        "Route: " + feature.properties.route
+    );
+  }
+
+  setInterval(() => {
+    loadBusData();
+  }, 7000);
+
+}
+
+loadBusData();
+
 
 
 })()
